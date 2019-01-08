@@ -170,6 +170,14 @@ func mapTemporaryFileToOperations() error {
 	}
 	defer file.Close()
 
+	mimeType, err := getMimeType(file)
+	if err != nil {
+		fmt.Println(err)
+
+		return fmt.Errorf("Unable to detect file MIME type. Reason: %v", err)
+	}
+
+	file.Seek(0, 0)
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
 		return fmt.Errorf("Could not read multipart file. Reason: %v", err)
@@ -186,7 +194,7 @@ func mapTemporaryFileToOperations() error {
 	}
 
 	upload := &GraphQLUpload{
-		MIMEType: handle.Header.Get("Content-Type"),
+		MIMEType: mimeType,
 		Filename: handle.Filename,
 		Filepath: f.Name(),
 	}
@@ -196,4 +204,14 @@ func mapTemporaryFileToOperations() error {
 	}
 
 	return nil
+}
+
+func getMimeType(file multipart.File) (string, error) {
+	buffer := make([]byte, 512)
+	n, err := file.Read(buffer)
+	if err != nil {
+		return "", err
+	}
+
+	return http.DetectContentType(buffer[:n]), nil
 }
