@@ -40,7 +40,7 @@ func (u *GraphQLUpload) UnmarshalGraphQL(input interface{}) error {
 	case map[string]interface{}:
 		data, err := json.Marshal(input)
 		if err != nil {
-			u = &GraphQLUpload{}
+			// Do nothing
 		} else {
 			json.Unmarshal(data, u)
 		}
