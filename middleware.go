@@ -172,8 +172,6 @@ func mapTemporaryFileToOperations() error {
 
 	mimeType, err := getMimeType(file)
 	if err != nil {
-		fmt.Println(err)
-
 		return fmt.Errorf("Unable to detect file MIME type. Reason: %v", err)
 	}
 
