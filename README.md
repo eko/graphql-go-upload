@@ -1,7 +1,9 @@
 graphql-go-upload
 =================
 
+[![TravisBuildStatus](https://api.travis-ci.org/eko/graphql-go-upload.svg?branch=master)](https://travis-ci.org/eko/graphql-go-upload)
 [![GoDoc](https://godoc.org/github.com/eko/graphql-go-upload?status.png)](https://godoc.org/github.com/eko/graphql-go-upload)
+[![GoReportCard](https://goreportcard.com/badge/github.com/eko/graphql-go-upload)](https://goreportcard.com/badge/github.com/eko/graphql-go-upload)
 
 This library exposes a middleware for the [GraphQL-Go](https://github.com/graph-gophers/graphql-go) project in order to expose a new `Upload` scalar type and allow you to send `multipart/form-data` POST requests containing files and fields data.
 
