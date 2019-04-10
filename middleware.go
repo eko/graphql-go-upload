@@ -34,6 +34,7 @@ var (
 	operations  map[string]interface{}
 	fileChannel = make(chan fileData)
 	wg          sync.WaitGroup
+	l           sync.Mutex
 )
 
 // Handler is the middleware function that retrieves the incoming HTTP request and
@@ -61,6 +62,8 @@ func Handler(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
+
+		l.Lock()
 
 		r.ParseMultipartForm((1 << 20) * 64)
 		m := r.PostFormValue("map")
@@ -103,6 +106,8 @@ func Handler(next http.Handler) http.Handler {
 		}
 
 		next.ServeHTTP(w, r)
+
+		l.Unlock()
 	})
 }
 
