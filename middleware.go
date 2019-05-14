@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+
+	"github.com/gabriel-vasile/mimetype"
 )
 
 type postedFiles func(key string) (multipart.File, *multipart.FileHeader, error)
@@ -175,16 +177,13 @@ func mapTemporaryFileToOperations() error {
 	}
 	defer file.Close()
 
-	mimeType, err := getMimeType(file)
-	if err != nil {
-		return fmt.Errorf("Unable to detect file MIME type. Reason: %v", err)
-	}
-
 	file.Seek(0, 0)
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
 		return fmt.Errorf("Could not read multipart file. Reason: %v", err)
 	}
+
+	mimeType, _ := mimetype.Detect(data)
 
 	f, err := ioutil.TempFile(os.TempDir(), fmt.Sprintf("graphqlupload-*%s", filepath.Ext(handle.Filename)))
 	if err != nil {
@@ -207,14 +206,4 @@ func mapTemporaryFileToOperations() error {
 	}
 
 	return nil
-}
-
-func getMimeType(file multipart.File) (string, error) {
-	buffer := make([]byte, 512)
-	n, err := file.Read(buffer)
-	if err != nil {
-		return "", err
-	}
-
-	return http.DetectContentType(buffer[:n]), nil
 }

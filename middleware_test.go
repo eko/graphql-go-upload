@@ -91,7 +91,7 @@ func TestHandlerWhenSuccess(t *testing.T) {
 
 	assert.NotEmpty(t, data.Variables.File.Filepath)
 	assert.Equal(t, data.Variables.File.Filename, "middleware.go")
-	assert.Equal(t, data.Variables.File.MIMEType, "text/plain; charset=utf-8")
+	assert.Equal(t, data.Variables.File.MIMEType, "text/plain")
 
 	assert.Equal(t, data.Variables.Title, "my test title")
 }

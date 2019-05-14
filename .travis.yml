@@ -10,5 +10,6 @@ go:
 
 install:
   - go get github.com/stretchr/testify
+  - go get github.com/gabriel-vasile/mimetype
 
 script: go test -v ./...
