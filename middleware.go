@@ -183,8 +183,6 @@ func mapTemporaryFileToOperations() error {
 		return fmt.Errorf("Could not read multipart file. Reason: %v", err)
 	}
 
-	mimeType, _ := mimetype.Detect(data)
-
 	f, err := ioutil.TempFile(os.TempDir(), fmt.Sprintf("graphqlupload-*%s", filepath.Ext(handle.Filename)))
 	if err != nil {
 		return fmt.Errorf("Unable to create temporary file. Reason: %v", err)
@@ -193,6 +191,11 @@ func mapTemporaryFileToOperations() error {
 	_, err = f.Write(data)
 	if err != nil {
 		return fmt.Errorf("Could not write temporary file. Reason: %v", err)
+	}
+
+	mimeType, _, err := mimetype.DetectFile(f.Name())
+	if err != nil {
+		return fmt.Errorf("Could not determine file MIME type. Reason: %v", err)
 	}
 
 	upload := &GraphQLUpload{
