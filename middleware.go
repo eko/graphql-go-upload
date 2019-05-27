@@ -183,7 +183,9 @@ func mapTemporaryFileToOperations() error {
 		return fmt.Errorf("Could not read multipart file. Reason: %v", err)
 	}
 
-	f, err := ioutil.TempFile(os.TempDir(), fmt.Sprintf("graphqlupload-*%s", filepath.Ext(handle.Filename)))
+	extension := strings.ToLower(filepath.Ext(handle.Filename))
+	filename := fmt.Sprintf("graphqlupload-*%s", extension)
+	f, err := ioutil.TempFile(os.TempDir(), filename)
 	if err != nil {
 		return fmt.Errorf("Unable to create temporary file. Reason: %v", err)
 	}
