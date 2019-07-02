@@ -66,6 +66,7 @@ func Handler(next http.Handler) http.Handler {
 		}
 
 		l.Lock()
+		defer l.Unlock()
 
 		r.ParseMultipartForm((1 << 20) * 64)
 		m := r.PostFormValue("map")
@@ -108,8 +109,6 @@ func Handler(next http.Handler) http.Handler {
 		}
 
 		next.ServeHTTP(w, r)
-
-		l.Unlock()
 	})
 }
 
