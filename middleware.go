@@ -194,13 +194,13 @@ func mapTemporaryFileToOperations() error {
 		return fmt.Errorf("Could not write temporary file. Reason: %v", err)
 	}
 
-	mimeType, _, err := mimetype.DetectFile(f.Name())
+	mimeType, err := mimetype.DetectFile(f.Name())
 	if err != nil {
 		return fmt.Errorf("Could not determine file MIME type. Reason: %v", err)
 	}
 
 	upload := &GraphQLUpload{
-		MIMEType: mimeType,
+		MIMEType: mimeType.String(),
 		Filename: handle.Filename,
 		Filepath: f.Name(),
 	}
